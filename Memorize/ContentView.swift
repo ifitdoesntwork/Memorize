@@ -8,9 +8,36 @@
 import SwiftUI
 
 struct ContentView: View {
-    var emojis = ["🚲", "🚂", "🚁", "🚜", "🚕", "🏎", "🚑", "🚓", "🚒", "✈️", "🚀", "⛵️", "🛸", "🛶", "🚌", "🏍", "🛺", "🚠", "🛵", "🚗", "🚚", "🚇", "🛻", "🚝"]
+    struct Theme {
+        let emojis: [String]
+        let iconName: String
+        
+        func fullIconName(selectedTheme: Theme) -> String {
+            
+            let suffix = iconName == selectedTheme.iconName
+                ? ".fill"
+                : ""
+            
+            return iconName + suffix
+        }
+    }
     
-    @State var emojiCount = 4
+    static let themes = [
+        Theme(
+            emojis: ["🚲", "🚂", "🚁", "🚜", "🚕", "🏎", "🚑", "🚓", "🚒", "✈️", "🚀", "⛵️", "🛸", "🛶", "🚌", "🏍", "🛺", "🚠", "🛵", "🚗", "🚚", "🚇", "🛻", "🚝"],
+            iconName: "car"
+        ),
+        Theme(
+            emojis: ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼"],
+            iconName: "hare"
+        ),
+        Theme(
+            emojis: ["⚽️", "🏀", "🏈", "⚾️", "🎾", "🎱", "🏸", "⛷", "🧘‍♀️", "🏄‍♀️", "🏊‍♀️", "🚴‍♀️"],
+            iconName: "sportscourt"
+        )
+    ]
+    
+    @State var selectedTheme = themes[0]
     
     var body: some View {
         VStack {
@@ -18,7 +45,7 @@ struct ContentView: View {
                 .font(.largeTitle)
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-                    ForEach(emojis[..<emojiCount], id: \.self) { emoji in
+                    ForEach(selectedTheme.emojis, id: \.self) { emoji in
                         CardView(content: emoji)
                             .aspectRatio(2/3, contentMode: .fit)
                     }
@@ -27,36 +54,30 @@ struct ContentView: View {
             .foregroundColor(.red)
             
             Spacer()
-            
-            HStack {
-                remove
-                Spacer()
-                add
-            }
-            .font(.largeTitle)
-            .padding(.horizontal)
+            themeButtons
         }
         .padding(.horizontal)
     }
     
-    var remove: some View {
-        Button {
-            if emojiCount > 1 {
-                emojiCount -= 1
+    var themeButtons: some View {
+        HStack {
+            Spacer()
+            
+            ForEach(Self.themes, id: \.iconName) { theme in
+                Button {
+                    selectedTheme = theme
+                } label: {
+                    Image(
+                        systemName: theme
+                            .fullIconName(selectedTheme: selectedTheme)
+                    )
+                }
+                
+                Spacer()
             }
-        } label: {
-            Image(systemName: "minus.circle")
         }
-    }
-    
-    var add: some View {
-        Button {
-            if emojiCount < emojis.count {
-                emojiCount += 1
-            }
-        } label: {
-            Image(systemName: "plus.circle")
-        }
+        .font(.largeTitle)
+        .padding()
     }
 }
 
