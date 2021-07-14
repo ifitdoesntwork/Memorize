@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     struct Theme {
+        let name: String
         let emojis: [String]
         let iconName: String
         
@@ -28,14 +29,17 @@ struct ContentView: View {
     
     static let themes = [
         Theme(
+            name: "Vehicles",
             emojis: ["🚲", "🚂", "🚁", "🚜", "🚕", "🏎", "🚑", "🚓", "🚒", "✈️", "🚀", "⛵️", "🛸", "🛶", "🚌", "🏍", "🛺", "🚠", "🛵", "🚗", "🚚", "🚇", "🛻", "🚝"],
             iconName: "car"
         ),
         Theme(
+            name: "Animals",
             emojis: ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼"],
             iconName: "hare"
         ),
         Theme(
+            name: "Sports",
             emojis: ["⚽️", "🏀", "🏈", "⚾️", "🎾", "🎱", "🏸", "⛷", "🧘‍♀️", "🏄‍♀️", "🏊‍♀️", "🚴‍♀️"],
             iconName: "sportscourt"
         )
@@ -64,23 +68,28 @@ struct ContentView: View {
     }
     
     var themeButtons: some View {
-        HStack {
+        HStack(alignment: .bottom) {
             Spacer()
             
             ForEach(Self.themes, id: \.iconName) { theme in
                 Button {
                     emojis = theme.shuffledEmojis
                 } label: {
-                    Image(
-                        systemName: theme
+                    VStack {
+                        let iconName = theme
                             .fullIconName(selectedEmojis: emojis)
-                    )
+                        
+                        Image(systemName: iconName)
+                            .font(.largeTitle)
+                        
+                        Text(theme.name)
+                            .font(.body)
+                    }
                 }
                 
                 Spacer()
             }
         }
-        .font(.largeTitle)
         .padding()
     }
 }
