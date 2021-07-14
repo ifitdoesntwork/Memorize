@@ -13,8 +13,13 @@ struct ContentView: View {
         let emojis: [String]
         let iconName: String
         
-        var shuffledEmojis: [String] {
-            emojis.shuffled()
+        var randomEmojis: [String] {
+            .init(
+                emojis
+                    .shuffled()[
+                        ..<Int.random(in: 4...emojis.count)
+                    ]
+            )
         }
         
         func fullIconName(selectedEmojis: [String]) -> String {
@@ -45,7 +50,7 @@ struct ContentView: View {
         )
     ]
     
-    @State var emojis = themes[0].shuffledEmojis
+    @State var emojis = themes[0].randomEmojis
     
     var body: some View {
         VStack {
@@ -73,7 +78,7 @@ struct ContentView: View {
             
             ForEach(Self.themes, id: \.iconName) { theme in
                 Button {
-                    emojis = theme.shuffledEmojis
+                    emojis = theme.randomEmojis
                 } label: {
                     VStack {
                         let iconName = theme
@@ -81,7 +86,6 @@ struct ContentView: View {
                         
                         Image(systemName: iconName)
                             .font(.largeTitle)
-                        
                         Text(theme.name)
                             .font(.body)
                     }
