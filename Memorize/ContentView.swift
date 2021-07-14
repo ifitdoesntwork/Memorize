@@ -57,7 +57,11 @@ struct ContentView: View {
             Text("Memorize!")
                 .font(.largeTitle)
             ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
+                LazyVGrid(columns: [
+                    GridItem(.adaptive(
+                        minimum: widthThatBestFits(cardCount: emojis.count)
+                    ))
+                ]) {
                     ForEach(emojis, id: \.self ) { emoji in
                         CardView(content: emoji)
                             .aspectRatio(2/3, contentMode: .fit)
@@ -95,6 +99,20 @@ struct ContentView: View {
             }
         }
         .padding()
+    }
+    
+    /// Optimized for iPhone Pro
+    func widthThatBestFits(cardCount: Int) -> CGFloat {
+        switch cardCount {
+        case 4:
+            return 120
+        case 5...9:
+            return 100
+        case 10...16:
+            return 70
+        default:
+            return 60
+        }
     }
 }
 
