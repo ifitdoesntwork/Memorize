@@ -12,13 +12,17 @@ struct ContentView: View {
         let emojis: [String]
         let iconName: String
         
-        func fullIconName(selectedTheme: Theme) -> String {
+        var shuffledEmojis: [String] {
+            emojis.shuffled()
+        }
+        
+        func fullIconName(selectedEmojis: [String]) -> String {
             
-            let suffix = iconName == selectedTheme.iconName
+            let selectionSuffix = emojis.sorted() == selectedEmojis.sorted()
                 ? ".fill"
                 : ""
             
-            return iconName + suffix
+            return iconName + selectionSuffix
         }
     }
     
@@ -37,7 +41,7 @@ struct ContentView: View {
         )
     ]
     
-    @State var selectedTheme = themes[0]
+    @State var emojis = themes[0].shuffledEmojis
     
     var body: some View {
         VStack {
@@ -45,7 +49,7 @@ struct ContentView: View {
                 .font(.largeTitle)
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
-                    ForEach(selectedTheme.emojis, id: \.self) { emoji in
+                    ForEach(emojis, id: \.self ) { emoji in
                         CardView(content: emoji)
                             .aspectRatio(2/3, contentMode: .fit)
                     }
@@ -65,11 +69,11 @@ struct ContentView: View {
             
             ForEach(Self.themes, id: \.iconName) { theme in
                 Button {
-                    selectedTheme = theme
+                    emojis = theme.shuffledEmojis
                 } label: {
                     Image(
                         systemName: theme
-                            .fullIconName(selectedTheme: selectedTheme)
+                            .fullIconName(selectedEmojis: emojis)
                     )
                 }
                 
