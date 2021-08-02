@@ -24,7 +24,7 @@ struct ContentView: View {
         
         func fullIconName(selectedEmojis: [String]) -> String {
             
-            let selectionSuffix = emojis.sorted() == selectedEmojis.sorted()
+            let selectionSuffix = Set(emojis).isSuperset(of: selectedEmojis)
                 ? ".fill"
                 : ""
             
@@ -101,7 +101,7 @@ struct ContentView: View {
         .padding()
     }
     
-    /// Optimized for iPhone Pro
+    /// Optimized for iPhone Pro in portrait mode
     func widthThatBestFits(cardCount: Int) -> CGFloat {
         switch cardCount {
         case 4:
