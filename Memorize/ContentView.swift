@@ -86,8 +86,14 @@ struct ContentView: View {
         themed theme: Theme
     ) -> some View {
         Button {
-            emojis = theme.emojis
-                .shuffled()
+            emojis = Array(
+                theme.emojis
+                    .shuffled()[
+                        ..<Int
+                            .random(in: 2..<theme.emojis.count)
+                    ]
+            )
+            
             color = theme.color
         } label: {
             VStack {
