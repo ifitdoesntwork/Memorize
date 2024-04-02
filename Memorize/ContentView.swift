@@ -64,9 +64,19 @@ struct ContentView: View {
         .padding()
     }
     
+    func widthThatBestFits(
+        cardCount: Int
+    ) -> CGFloat {
+        100 - CGFloat(cardCount) * 4
+    }
+    
     var cards: some View {
         LazyVGrid(
-            columns: [GridItem(.adaptive(minimum: 60))]
+            columns: [GridItem(.adaptive(
+                minimum: widthThatBestFits(
+                    cardCount: emojis.count
+                )
+            ))]
         ) {
             let cards = (emojis + emojis)
                 .shuffled()
