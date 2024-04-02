@@ -12,6 +12,7 @@ struct ContentView: View {
     struct Theme {
         let title: String
         let image: String
+        let color: Color
         let emojis: [String]
     }
     
@@ -19,6 +20,7 @@ struct ContentView: View {
         Theme(
             title: "Halloween",
             image: "basket.fill",
+            color: .orange,
             emojis: [
                 "👻", "🎃", "🕷️", "😈", "💀", "🕸️",
                 "🧙‍♀️", "🙀", "👹", "😱", "☠️", "🍭"
@@ -27,6 +29,7 @@ struct ContentView: View {
         Theme(
             title: "Sports",
             image: "trophy.fill",
+            color: .red,
             emojis: [
                 "⚽️", "🏀", "🏈", "⚾️", "🎾",
                 "🏸", "🧘‍♀️", "🏄‍♀️", "🏊‍♀️", "🚴‍♀️"
@@ -35,6 +38,7 @@ struct ContentView: View {
         Theme(
             title: "Animals",
             image: "hare.fill",
+            color: .green,
             emojis: [
                 "🐶", "🐱", "🐭", "🐹",
                 "🐰", "🦊", "🐻", "🐼"
@@ -43,6 +47,7 @@ struct ContentView: View {
     ]
     
     @State var emojis = [String]()
+    @State var color = Color.white
     
     var body: some View {
         VStack {
@@ -74,7 +79,7 @@ struct ContentView: View {
                     .aspectRatio(2/3, contentMode: .fit)
             }
         }
-        .foregroundColor(.orange)
+        .foregroundColor(color)
     }
     
     func tab(
@@ -83,12 +88,14 @@ struct ContentView: View {
         Button {
             emojis = theme.emojis
                 .shuffled()
+            color = theme.color
         } label: {
             VStack {
                 Image(systemName: theme.image)
                     .font(.largeTitle)
                 Text(theme.title)
             }
+            .foregroundColor(theme.color)
         }
     }
     
