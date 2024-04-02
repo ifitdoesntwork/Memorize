@@ -25,8 +25,8 @@ struct ContentView: View {
         Theme(
             title: "Sports",
             emojis: [
-                "⚽️", "🏀", "🏈", "⚾️", "🎾", "🎱",
-                "🏸", "⛷", "🧘‍♀️", "🏄‍♀️", "🏊‍♀️", "🚴‍♀️"
+                "⚽️", "🏀", "🏈", "⚾️", "🎾",
+                "🏸", "🧘‍♀️", "🏄‍♀️", "🏊‍♀️", "🚴‍♀️"
             ]
         ),
         Theme(
@@ -59,11 +59,13 @@ struct ContentView: View {
         LazyVGrid(
             columns: [GridItem(.adaptive(minimum: 120))]
         ) {
+            let cards = emojis + emojis
+            
             ForEach(
-                emojis.indices,
+                cards.indices,
                 id: \.self
             ) { index in
-                CardView(content: emojis[index])
+                CardView(content: cards[index])
                     .aspectRatio(2/3, contentMode: .fit)
             }
         }
