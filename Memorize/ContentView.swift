@@ -59,7 +59,8 @@ struct ContentView: View {
         LazyVGrid(
             columns: [GridItem(.adaptive(minimum: 120))]
         ) {
-            let cards = emojis + emojis
+            let cards = (emojis + emojis)
+                .shuffled()
             
             ForEach(
                 cards.indices,
@@ -77,6 +78,7 @@ struct ContentView: View {
     ) -> some View {
         Button {
             emojis = theme.emojis
+                .shuffled()
         } label: {
             Text(theme.title)
         }
