@@ -61,7 +61,7 @@ struct ContentView: View {
     
     var cards: some View {
         LazyVGrid(
-            columns: [GridItem(.adaptive(minimum: 120))]
+            columns: [GridItem(.adaptive(minimum: 60))]
         ) {
             let cards = (emojis + emojis)
                 .shuffled()
