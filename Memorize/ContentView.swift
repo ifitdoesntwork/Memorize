@@ -21,7 +21,6 @@ struct ContentView: View {
                 cards
             }
             Spacer()
-            cardCountAdjusters
         }
         .padding()
     }
@@ -39,45 +38,6 @@ struct ContentView: View {
             }
         }
         .foregroundColor(.orange)
-    }
-    
-    var cardCountAdjusters: some View {
-        HStack {
-            cardRemover
-            Spacer()
-            cardAdder
-        }
-        .imageScale(.large)
-        .font(.largeTitle)
-    }
-    
-    func cardCountAdjuster(
-        by offset: Int,
-        symbol: String
-    ) -> some View {
-        Button {
-            cardCount += offset
-        } label: {
-            Image(systemName: symbol)
-        }
-        .disabled(
-            cardCount + offset < 1
-            || cardCount + offset > emojis.count
-        )
-    }
-    
-    var cardRemover: some View {
-        cardCountAdjuster(
-            by: -1,
-            symbol: "rectangle.stack.badge.minus.fill"
-        )
-    }
-    
-    var cardAdder: some View {
-        cardCountAdjuster(
-            by: +1,
-            symbol: "rectangle.stack.badge.plus.fill"
-        )
     }
 }
 
