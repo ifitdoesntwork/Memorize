@@ -11,12 +11,14 @@ struct ContentView: View {
     
     struct Theme {
         let title: String
+        let image: String
         let emojis: [String]
     }
     
     let themes = [
         Theme(
             title: "Halloween",
+            image: "basket.fill",
             emojis: [
                 "👻", "🎃", "🕷️", "😈", "💀", "🕸️",
                 "🧙‍♀️", "🙀", "👹", "😱", "☠️", "🍭"
@@ -24,6 +26,7 @@ struct ContentView: View {
         ),
         Theme(
             title: "Sports",
+            image: "trophy.fill",
             emojis: [
                 "⚽️", "🏀", "🏈", "⚾️", "🎾",
                 "🏸", "🧘‍♀️", "🏄‍♀️", "🏊‍♀️", "🚴‍♀️"
@@ -31,6 +34,7 @@ struct ContentView: View {
         ),
         Theme(
             title: "Animals",
+            image: "hare.fill",
             emojis: [
                 "🐶", "🐱", "🐭", "🐹",
                 "🐰", "🦊", "🐻", "🐼"
@@ -80,7 +84,11 @@ struct ContentView: View {
             emojis = theme.emojis
                 .shuffled()
         } label: {
-            Text(theme.title)
+            VStack {
+                Image(systemName: theme.image)
+                    .font(.largeTitle)
+                Text(theme.title)
+            }
         }
     }
     
