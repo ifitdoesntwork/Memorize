@@ -8,21 +8,49 @@
 import SwiftUI
 
 struct ContentView: View {
-    let emojis = [
-        "👻", "🎃", "🕷️", "😈", "💀", "🕸️",
-        "🧙‍♀️", "🙀", "👹", "😱", "☠️", "🍭"
+    
+    struct Theme {
+        let title: String
+        let emojis: [String]
+    }
+    
+    let themes = [
+        Theme(
+            title: "Halloween",
+            emojis: [
+                "👻", "🎃", "🕷️", "😈", "💀", "🕸️",
+                "🧙‍♀️", "🙀", "👹", "😱", "☠️", "🍭"
+            ]
+        ),
+        Theme(
+            title: "Sports",
+            emojis: [
+                "⚽️", "🏀", "🏈", "⚾️", "🎾", "🎱",
+                "🏸", "⛷", "🧘‍♀️", "🏄‍♀️", "🏊‍♀️", "🚴‍♀️"
+            ]
+        ),
+        Theme(
+            title: "Animals",
+            emojis: [
+                "🐶", "🐱", "🐭", "🐹",
+                "🐰", "🦊", "🐻", "🐼"
+            ]
+        )
     ]
     
-    @State var cardCount = 4
+    @State var emojis = [String]()
     
     var body: some View {
         VStack {
             Text("Memorize!")
                 .font(.largeTitle)
+            
             ScrollView {
                 cards
             }
+            
             Spacer()
+            themeSelector
         }
         .padding()
     }
@@ -32,7 +60,7 @@ struct ContentView: View {
             columns: [GridItem(.adaptive(minimum: 120))]
         ) {
             ForEach(
-                0..<cardCount,
+                emojis.indices,
                 id: \.self
             ) { index in
                 CardView(content: emojis[index])
@@ -40,6 +68,30 @@ struct ContentView: View {
             }
         }
         .foregroundColor(.orange)
+    }
+    
+    func tab(
+        themed theme: Theme
+    ) -> some View {
+        Button {
+            emojis = theme.emojis
+        } label: {
+            Text(theme.title)
+        }
+    }
+    
+    var themeSelector: some View {
+        HStack {
+            Spacer()
+            
+            ForEach(
+                themes.indices,
+                id: \.self
+            ) { index in
+                tab(themed: themes[index])
+                Spacer()
+            }
+        }
     }
 }
 
