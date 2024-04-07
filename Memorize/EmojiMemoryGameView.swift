@@ -54,6 +54,7 @@ struct EmojiMemoryGameView: View {
             
             ScrollView {
                 cards
+                    .animation(.default, value: viewModel.cards)
             }
             
             Button("Shuffle") {
@@ -74,13 +75,13 @@ struct EmojiMemoryGameView: View {
             )],
             spacing: 0
         ) {
-            ForEach(
-                viewModel.cards.indices,
-                id: \.self
-            ) { index in
-                CardView(viewModel.cards[index])
+            ForEach(viewModel.cards) { card in
+                CardView(card)
                     .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
+                    .onTapGesture {
+                        viewModel.choose(card)
+                    }
             }
         }
         .foregroundColor(.orange)
@@ -143,6 +144,7 @@ struct CardView: View {
                 .fill()
                 .opacity(card.isFaceUp ? 0 : 1)
         }
+        .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
     }
 }
 
