@@ -18,7 +18,7 @@ struct EmojiMemoryGameView: View {
                     .animation(.default, value: viewModel.cards)
             }
         }
-        .foregroundColor(.orange)
+        .foregroundColor(viewModel.color)
         .padding()
     }
     
