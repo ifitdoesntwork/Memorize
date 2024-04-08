@@ -24,6 +24,8 @@ struct EmojiMemoryGameView: View {
     
     var panel: some View {
         HStack {
+            Text("Score: \(viewModel.score)")
+            
             Spacer()
             
             Text(viewModel.name)
