@@ -26,6 +26,8 @@ struct EmojiMemoryGameView: View {
         HStack {
             Spacer()
             
+            Text(viewModel.name)
+            
             Button {
                 viewModel.restart()
             } label: {

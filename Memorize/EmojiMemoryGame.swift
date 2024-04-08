@@ -52,6 +52,10 @@ class EmojiMemoryGame: ObservableObject {
         theme.uiColor
     }
     
+    var name: String {
+        theme.name
+    }
+    
     // MARK: - Intents
     
     func choose(_ card: MemoryGame<String>.Card) {
