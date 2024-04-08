@@ -10,59 +10,12 @@ import SwiftUI
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
     
-    struct Theme {
-        let title: String
-        let image: String
-        let color: Color
-        let emojis: [String]
-    }
-    
-    let themes = [
-        Theme(
-            title: "Halloween",
-            image: "basket.fill",
-            color: .orange,
-            emojis: [
-                "👻", "🎃", "🕷️", "😈", "💀", "🕸️",
-                "🧙‍♀️", "🙀", "👹", "😱", "☠️", "🍭"
-            ]
-        ),
-        Theme(
-            title: "Sports",
-            image: "trophy.fill",
-            color: .red,
-            emojis: [
-                "⚽️", "🏀", "🏈", "⚾️", "🎾",
-                "🏸", "🧘‍♀️", "🏄‍♀️", "🏊‍♀️", "🚴‍♀️"
-            ]
-        ),
-        Theme(
-            title: "Animals",
-            image: "hare.fill",
-            color: .green,
-            emojis: [
-                "🐶", "🐱", "🐭", "🐹",
-                "🐰", "🦊", "🐻", "🐼"
-            ]
-        )
-    ]
-    
     var body: some View {
         VStack {
-            Text("Memorize!")
-                .font(.largeTitle)
-            
             ScrollView {
                 cards
                     .animation(.default, value: viewModel.cards)
             }
-            
-            Button("Shuffle") {
-                viewModel.shuffle()
-            }
-            
-            Spacer()
-            themeSelector
         }
         .padding()
     }
@@ -85,35 +38,6 @@ struct EmojiMemoryGameView: View {
             }
         }
         .foregroundColor(.orange)
-    }
-    
-    func tab(
-        themed theme: Theme
-    ) -> some View {
-        Button {
-            
-        } label: {
-            VStack {
-                Image(systemName: theme.image)
-                    .font(.largeTitle)
-                Text(theme.title)
-            }
-            .foregroundColor(theme.color)
-        }
-    }
-    
-    var themeSelector: some View {
-        HStack {
-            Spacer()
-            
-            ForEach(
-                themes.indices,
-                id: \.self
-            ) { index in
-                tab(themed: themes[index])
-                Spacer()
-            }
-        }
     }
 }
 
