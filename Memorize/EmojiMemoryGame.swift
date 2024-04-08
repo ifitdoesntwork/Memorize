@@ -12,11 +12,14 @@ class EmojiMemoryGame: ObservableObject {
     private static func createMemoryGame(
         themed theme: Theme
     ) -> MemoryGame<String> {
-        MemoryGame(
+        let emojis = theme.emojis
+            .shuffled()
+        
+        return MemoryGame(
             numberOfPairsOfCards: theme.numberOfPairs
         ) { pairIndex in
-            if theme.emojis.indices.contains(pairIndex) {
-                return theme.emojis[pairIndex]
+            if emojis.indices.contains(pairIndex) {
+                return emojis[pairIndex]
             } else {
                 return "⁉️"
             }
