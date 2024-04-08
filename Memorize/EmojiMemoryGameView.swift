@@ -12,12 +12,27 @@ struct EmojiMemoryGameView: View {
     
     var body: some View {
         VStack {
+            panel
             ScrollView {
                 cards
                     .animation(.default, value: viewModel.cards)
             }
         }
+        .foregroundColor(.orange)
         .padding()
+    }
+    
+    var panel: some View {
+        HStack {
+            Spacer()
+            
+            Button {
+                viewModel.restart()
+            } label: {
+                Image(systemName: "arrow.counterclockwise")
+            }
+        }
+        .font(.largeTitle)
     }
     
     var cards: some View {
@@ -37,7 +52,6 @@ struct EmojiMemoryGameView: View {
                     }
             }
         }
-        .foregroundColor(.orange)
     }
 }
 
