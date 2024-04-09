@@ -23,7 +23,10 @@ struct EmojiMemoryGameView: View {
     
     var panel: some View {
         HStack {
-            Text("Score: \(viewModel.score)")
+            Text(
+                timerInterval: Date.now...viewModel.goalDate,
+                pauseTime: viewModel.endDate
+            )
             
             Spacer()
             
@@ -35,7 +38,7 @@ struct EmojiMemoryGameView: View {
                 Image(systemName: "arrow.counterclockwise")
             }
         }
-        .font(.title)
+        .font(.largeTitle)
         .foregroundColor(viewModel.colors.first)
     }
     

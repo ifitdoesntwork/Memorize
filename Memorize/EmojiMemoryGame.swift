@@ -57,8 +57,12 @@ class EmojiMemoryGame: ObservableObject {
         theme.name
     }
     
-    var score: Int {
-        model.score
+    var goalDate: Date {
+        model.goalDate
+    }
+    
+    var endDate: Date? {
+        model.endDate
     }
     
     // MARK: - Intents

@@ -9,8 +9,8 @@ import Foundation
 
 struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: [Card]
-    private(set) var score = 0
-    private var firstCardSelectionDate = Date()
+    private(set) var goalDate: Date
+    private(set) var endDate: Date?
     
     init(
         numberOfPairsOfCards: Int,
@@ -23,6 +23,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             cards.append(Card(content: content, id: "\(pairIndex)b"))
         }
         cards.shuffle()
+        goalDate = Date(timeIntervalSinceNow: TimeInterval(10 * cards.count))
     }
     
     private var indexOfTheOneAndOnlyFaceUpCard: Int? {
@@ -37,8 +38,10 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
-    private var timePenalty: Int {
-        Int(Date().timeIntervalSince(firstCardSelectionDate)) * 20
+    private var unmatchedCardsCount: Int {
+        cards
+            .filter { !$0.isMatched }
+            .count
     }
     
     mutating func choose(_ card: Card) {
@@ -48,11 +51,14 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                     if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
-                        score += 200 - timePenalty
+                        goalDate.addTimeInterval(20)
+                        if unmatchedCardsCount == .zero {
+                            endDate = goalDate
+                        }
                     } else {
                         for index in [chosenIndex, potentialMatchIndex] {
                             if cards[index].isPreviouslySeen {
-                                score -= 100 + timePenalty
+                                goalDate.addTimeInterval(-10)
                             } else {
                                 cards[index].isPreviouslySeen = true
                             }
@@ -60,7 +66,6 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                     }
                 } else {
                     indexOfTheOneAndOnlyFaceUpCard = chosenIndex
-                    firstCardSelectionDate = Date()
                 }
                 cards[chosenIndex].isFaceUp = true
             }
