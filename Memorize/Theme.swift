@@ -24,7 +24,7 @@ struct Theme {
     
     let name: String
     let emoji: Emoji
-    let numberOfPairs: Int
+    let numberOfPairs: Int?
     let color: Color
     
     static let suggestions = [
@@ -37,7 +37,7 @@ struct Theme {
         Theme(
             name: "Sports",
             emoji: .sports,
-            numberOfPairs: 4,
+            numberOfPairs: nil,
             color: .red
         ),
         Theme(
@@ -49,7 +49,7 @@ struct Theme {
         Theme(
             name: "October",
             emoji: .halloween,
-            numberOfPairs: 6,
+            numberOfPairs: nil,
             color: .red
         ),
         Theme(

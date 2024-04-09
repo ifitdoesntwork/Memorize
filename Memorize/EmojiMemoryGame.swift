@@ -16,7 +16,7 @@ class EmojiMemoryGame: ObservableObject {
             .shuffled()
         
         return MemoryGame(
-            numberOfPairsOfCards: theme.numberOfPairs
+            numberOfPairsOfCards: theme.numberOfPairs ?? .random(in: 0...emojis.count)
         ) { pairIndex in
             if emojis.indices.contains(pairIndex) {
                 return emojis[pairIndex]
