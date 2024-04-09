@@ -35,7 +35,7 @@ struct EmojiMemoryGameView: View {
                 Image(systemName: "arrow.counterclockwise")
             }
         }
-        .font(.largeTitle)
+        .font(.title)
         .foregroundColor(viewModel.colors.first)
     }
     

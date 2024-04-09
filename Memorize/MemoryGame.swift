@@ -10,6 +10,7 @@ import Foundation
 struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: [Card]
     private(set) var score = 0
+    private var firstCardSelectionDate = Date()
     
     init(
         numberOfPairsOfCards: Int,
@@ -24,7 +25,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         cards.shuffle()
     }
     
-    var indexOfTheOneAndOnlyFaceUpCard: Int? {
+    private var indexOfTheOneAndOnlyFaceUpCard: Int? {
         get {
             cards.indices
                 .filter { cards[$0].isFaceUp }
@@ -36,6 +37,10 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
+    private var timePenalty: Int {
+        Int(Date().timeIntervalSince(firstCardSelectionDate)) * 20
+    }
+    
     mutating func choose(_ card: Card) {
         if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
             if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
@@ -43,11 +48,11 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                     if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
-                        score += 2
+                        score += 200 - timePenalty
                     } else {
                         for index in [chosenIndex, potentialMatchIndex] {
                             if cards[index].isPreviouslySeen {
-                                score -= 1
+                                score -= 100 + timePenalty
                             } else {
                                 cards[index].isPreviouslySeen = true
                             }
@@ -55,6 +60,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                     }
                 } else {
                     indexOfTheOneAndOnlyFaceUpCard = chosenIndex
+                    firstCardSelectionDate = Date()
                 }
                 cards[chosenIndex].isFaceUp = true
             }
