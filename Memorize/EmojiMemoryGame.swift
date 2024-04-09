@@ -48,8 +48,9 @@ class EmojiMemoryGame: ObservableObject {
         model.cards
     }
     
-    var color: Color {
-        theme.uiColor
+    var colors: [Color] {
+        theme.colors
+            .map(\.uiColor)
     }
     
     var name: String {
@@ -92,9 +93,12 @@ private extension Theme {
             ]
         }
     }
+}
+
+private extension Theme.Color {
     
-    var uiColor: SwiftUI.Color {
-        switch color {
+    var uiColor: Color {
+        switch self {
         case .orange:
             return .orange
         case .red:

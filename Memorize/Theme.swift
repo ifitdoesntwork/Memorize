@@ -25,44 +25,44 @@ struct Theme {
     let name: String
     let emoji: Emoji
     let numberOfPairs: Int?
-    let color: Color
+    let colors: [Color]
     
     static let suggestions = [
         Theme(
             name: "Halloween",
             emoji: .halloween,
             numberOfPairs: 12,
-            color: .orange
+            colors: [.orange, .red]
         ),
         Theme(
             name: "Sports",
             emoji: .sports,
             numberOfPairs: nil,
-            color: .red
+            colors: [.red, .blue]
         ),
         Theme(
             name: "Animals",
             emoji: .animals,
             numberOfPairs: 8,
-            color: .green
+            colors: [.green]
         ),
         Theme(
             name: "October",
             emoji: .halloween,
             numberOfPairs: nil,
-            color: .red
+            colors: [.red]
         ),
         Theme(
             name: "Big Sports",
             emoji: .sports,
             numberOfPairs: 10,
-            color: .blue
+            colors: [.blue]
         ),
         Theme(
             name: "My Pets",
             emoji: .animals,
             numberOfPairs: 3,
-            color: .orange
+            colors: [.orange]
         )
     ]
     
@@ -71,7 +71,7 @@ struct Theme {
             name: "Random",
             emoji: Emoji.allCases.randomElement()!,
             numberOfPairs: Int.random(in: 2..<20),
-            color: Color.allCases.randomElement()!
+            colors: [Color.allCases.randomElement()!]
         )
     }
 }

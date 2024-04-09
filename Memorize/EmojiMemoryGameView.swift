@@ -18,7 +18,6 @@ struct EmojiMemoryGameView: View {
                     .animation(.default, value: viewModel.cards)
             }
         }
-        .foregroundColor(viewModel.color)
         .padding()
     }
     
@@ -37,6 +36,7 @@ struct EmojiMemoryGameView: View {
             }
         }
         .font(.largeTitle)
+        .foregroundColor(viewModel.colors.first)
     }
     
     var cards: some View {
@@ -48,7 +48,7 @@ struct EmojiMemoryGameView: View {
             spacing: 0
         ) {
             ForEach(viewModel.cards) { card in
-                CardView(card)
+                CardView(card, colors: viewModel.colors)
                     .aspectRatio(2/3, contentMode: .fit)
                     .padding(4)
                     .onTapGesture {
@@ -61,9 +61,14 @@ struct EmojiMemoryGameView: View {
 
 struct CardView: View {
     let card: MemoryGame<String>.Card
+    let gradient: Gradient
     
-    init(_ card: MemoryGame<String>.Card) {
+    init(
+        _ card: MemoryGame<String>.Card,
+        colors: [Color]
+    ) {
         self.card = card
+        self.gradient = Gradient(colors: colors)
     }
     
     var body: some View {
@@ -74,7 +79,7 @@ struct CardView: View {
                 base
                     .fill(.white)
                 base
-                    .strokeBorder(lineWidth: 2)
+                    .strokeBorder(gradient, lineWidth: 2)
                 Text(card.content)
                     .font(.system(size: 200))
                     .minimumScaleFactor(0.01)
@@ -83,7 +88,7 @@ struct CardView: View {
             .opacity(card.isFaceUp ? 1 : 0)
             
             base
-                .fill()
+                .fill(gradient)
                 .opacity(card.isFaceUp ? 0 : 1)
         }
         .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
