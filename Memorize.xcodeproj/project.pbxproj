@@ -17,6 +17,7 @@
 		926806BD2BC284F100FB9196 /* MemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926806BC2BC284F100FB9196 /* MemoryGame.swift */; };
 		926806BF2BC287D000FB9196 /* EmojiMemoryGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926806BE2BC287D000FB9196 /* EmojiMemoryGame.swift */; };
 		926806C12BC3F0D200FB9196 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926806C02BC3F0D200FB9196 /* Theme.swift */; };
+		92B9A3572BC68AC400ED2A6E /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B9A3562BC68AC400ED2A6E /* AspectVGrid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		926806BC2BC284F100FB9196 /* MemoryGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryGame.swift; sourceTree = "<group>"; };
 		926806BE2BC287D000FB9196 /* EmojiMemoryGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMemoryGame.swift; sourceTree = "<group>"; };
 		926806C02BC3F0D200FB9196 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		92B9A3562BC68AC400ED2A6E /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 			children = (
 				9246EDC92BBBE30B00955BA9 /* MemorizeApp.swift */,
 				9246EDCB2BBBE30B00955BA9 /* EmojiMemoryGameView.swift */,
+				92B9A3562BC68AC400ED2A6E /* AspectVGrid.swift */,
 				926806BC2BC284F100FB9196 /* MemoryGame.swift */,
 				926806BE2BC287D000FB9196 /* EmojiMemoryGame.swift */,
 				926806C02BC3F0D200FB9196 /* Theme.swift */,
@@ -200,7 +203,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1420;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					9246EDC52BBBE30B00955BA9 = {
 						CreatedOnToolsVersion = 14.2;
@@ -268,6 +271,7 @@
 			files = (
 				926806BD2BC284F100FB9196 /* MemoryGame.swift in Sources */,
 				9246EDCC2BBBE30B00955BA9 /* EmojiMemoryGameView.swift in Sources */,
+				92B9A3572BC68AC400ED2A6E /* AspectVGrid.swift in Sources */,
 				926806C12BC3F0D200FB9196 /* Theme.swift in Sources */,
 				9246EDCA2BBBE30B00955BA9 /* MemorizeApp.swift in Sources */,
 				926806BF2BC287D000FB9196 /* EmojiMemoryGame.swift in Sources */,
@@ -311,6 +315,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -343,6 +348,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -371,6 +377,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -403,6 +410,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
