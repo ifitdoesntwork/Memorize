@@ -15,7 +15,6 @@ struct EmojiMemoryGameView: View {
         VStack {
             panel
             cards
-                .animation(.default, value: viewModel.cards)
         }
         .padding()
     }
@@ -30,9 +29,12 @@ struct EmojiMemoryGameView: View {
             Spacer()
             
             Text(viewModel.name)
+                .animation(nil)
             
             Button {
-                viewModel.restart()
+                withAnimation {
+                    viewModel.restart()
+                }
             } label: {
                 Image(systemName: "arrow.counterclockwise")
             }
@@ -48,10 +50,17 @@ struct EmojiMemoryGameView: View {
         ) { card in
             CardView(card, colors: viewModel.colors)
                 .padding(4)
+                .overlay(FlyingNumber(number: timeChange(causedBy: card)))
                 .onTapGesture {
-                    viewModel.choose(card)
+                    withAnimation {
+                        viewModel.choose(card)
+                    }
                 }
         }
+    }
+    
+    private func timeChange(causedBy card: CardView.Card) -> Int {
+        .zero
     }
 }
 

@@ -47,10 +47,20 @@ struct CardView: View {
                     .minimumScaleFactor(Constants.FontSize.scaleFactor)
                     .aspectRatio(contentMode: .fit)
                     .padding(Constants.Pie.inset)
+                    .rotationEffect(.degrees(card.isMatched ? 360 : 0))
+                    .animation(.spin(duration: 1), value: card.isMatched)
             )
             .padding(Constants.inset)
             .cardify(isFaceUp: card.isFaceUp, gradient: gradient)
             .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
+    }
+}
+
+extension Animation {
+    
+    static func spin(duration: TimeInterval) -> Self {
+        .linear(duration: duration)
+        .repeatForever(autoreverses: false)
     }
 }
 
@@ -65,14 +75,14 @@ struct CardView: View {
                     content: "X",
                     id: "test1"
                 ),
-                colors: [.green]
+                colors: [.orange]
             )
             CardView(
                 Card(
                     content: "X",
                     id: "test1"
                 ),
-                colors: [.green]
+                colors: [.orange]
             )
         }
         HStack {
@@ -83,7 +93,7 @@ struct CardView: View {
                     content: "X",
                     id: "test1"
                 ),
-                colors: [.green]
+                colors: [.red, .blue]
             )
             CardView(
                 Card(
@@ -91,7 +101,7 @@ struct CardView: View {
                     content: "X",
                     id: "test1"
                 ),
-                colors: [.green]
+                colors: [.red, .blue]
             )
         }
     }

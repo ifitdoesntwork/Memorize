@@ -7,9 +7,26 @@
 
 import SwiftUI
 
-struct Cardify: ViewModifier {
-    var isFaceUp: Bool
+struct Cardify: ViewModifier, Animatable {
     let gradient: Gradient
+    var rotation: Double
+    
+    init(
+        isFaceUp: Bool,
+        gradient: Gradient
+    ) {
+        rotation = isFaceUp ? 0 : 180
+        self.gradient = gradient
+    }
+    
+    var isFaceUp: Bool {
+        rotation < 90
+    }
+    
+    var animatableData: Double {
+        get { rotation }
+        set { rotation = newValue }
+    }
     
     func body(content: Content) -> some View {
         ZStack {
@@ -28,6 +45,7 @@ struct Cardify: ViewModifier {
                 .fill(gradient)
                 .opacity(isFaceUp ? 0 : 1)
         }
+        .rotation3DEffect(.degrees(rotation), axis: (0, 1, 0))
     }
     
     private struct Constants {

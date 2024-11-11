@@ -20,6 +20,7 @@
 		9298B2AB2CE20D3600DCB73F /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9298B2AA2CE20D3600DCB73F /* CardView.swift */; };
 		9298B2AD2CE21D9E00DCB73F /* Pie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9298B2AC2CE21D9E00DCB73F /* Pie.swift */; };
 		9298B2AF2CE220D700DCB73F /* Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9298B2AE2CE220D700DCB73F /* Cardify.swift */; };
+		9298B2B12CE2326D00DCB73F /* FlyingNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9298B2B02CE2326D00DCB73F /* FlyingNumber.swift */; };
 		92B9A3572BC68AC400ED2A6E /* AspectVGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B9A3562BC68AC400ED2A6E /* AspectVGrid.swift */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 		9298B2AA2CE20D3600DCB73F /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		9298B2AC2CE21D9E00DCB73F /* Pie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pie.swift; sourceTree = "<group>"; };
 		9298B2AE2CE220D700DCB73F /* Cardify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cardify.swift; sourceTree = "<group>"; };
+		9298B2B02CE2326D00DCB73F /* FlyingNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlyingNumber.swift; sourceTree = "<group>"; };
 		92B9A3562BC68AC400ED2A6E /* AspectVGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AspectVGrid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,6 +115,7 @@
 				9298B2AA2CE20D3600DCB73F /* CardView.swift */,
 				9298B2AE2CE220D700DCB73F /* Cardify.swift */,
 				9298B2AC2CE21D9E00DCB73F /* Pie.swift */,
+				9298B2B02CE2326D00DCB73F /* FlyingNumber.swift */,
 				92B9A3562BC68AC400ED2A6E /* AspectVGrid.swift */,
 				926806BC2BC284F100FB9196 /* MemoryGame.swift */,
 				926806BE2BC287D000FB9196 /* EmojiMemoryGame.swift */,
@@ -287,6 +290,7 @@
 				926806C12BC3F0D200FB9196 /* Theme.swift in Sources */,
 				9246EDCA2BBBE30B00955BA9 /* MemorizeApp.swift in Sources */,
 				926806BF2BC287D000FB9196 /* EmojiMemoryGame.swift in Sources */,
+				9298B2B12CE2326D00DCB73F /* FlyingNumber.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
