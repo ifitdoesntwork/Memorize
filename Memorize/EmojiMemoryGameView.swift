@@ -9,12 +9,19 @@ import SwiftUI
 
 struct EmojiMemoryGameView: View {
     @ObservedObject var viewModel: EmojiMemoryGame
-    private let aspectRatio: CGFloat = 2/3
+    
+    private struct Constants {
+        static let aspectRatio: CGFloat = 2/3
+        static let deckWidth: CGFloat = 50
+        static let dealAnimation: Animation = .easeInOut(duration: 1)
+        static let dealInterval: TimeInterval = 0.15
+    }
     
     var body: some View {
         VStack {
             panel
             cards
+            deck
         }
         .padding()
     }
@@ -33,6 +40,8 @@ struct EmojiMemoryGameView: View {
             
             Button {
                 withAnimation {
+                    dealt.removeAll()
+                    lastTimeChange = (TimeInterval.zero, causedByCardId: "")
                     viewModel.restart()
                 }
             } label: {
@@ -46,25 +55,83 @@ struct EmojiMemoryGameView: View {
     var cards: some View {
         AspectVGrid(
             viewModel.cards,
-            aspectRatio: aspectRatio
+            aspectRatio: Constants.aspectRatio
         ) { card in
-            CardView(card, colors: viewModel.colors)
-                .padding(4)
-                .overlay(FlyingNumber(number: timeChange(causedBy: card)))
-                .onTapGesture {
-                    withAnimation {
-                        viewModel.choose(card)
+            if isDealt(card) {
+                CardView(card, colors: viewModel.colors)
+                    .matchedGeometryEffect(id: card.id, in: dealing)
+                    .transition(.asymmetric(insertion: .identity, removal: .identity))
+                    .padding(4)
+                    .overlay(FlyingNumber(number: timeChange(causedBy: card)))
+                    .zIndex(timeChange(causedBy: card) != .zero ? 100 : 0)
+                    .onTapGesture {
+                        choose(card)
                     }
-                }
+            }
         }
     }
     
+    @State private var dealt = Set<CardView.Card.ID>()
+    
+    private func isDealt(_ card: CardView.Card) -> Bool {
+        dealt.contains(card.id)
+    }
+    
+    private var undealtCards: [CardView.Card] {
+        viewModel.cards.filter { !isDealt($0) }
+    }
+    
+    @Namespace private var dealing
+    
+    var deck: some View {
+        ZStack {
+            ForEach(undealtCards) { card in
+                CardView(card, colors: viewModel.colors)
+                    .matchedGeometryEffect(id: card.id, in: dealing)
+                    .transition(.asymmetric(insertion: .identity, removal: .identity))
+            }
+        }
+        .frame(
+            width: Constants.deckWidth,
+            height: Constants.deckWidth / Constants.aspectRatio
+        )
+        .onTapGesture {
+            deal()
+        }
+    }
+    
+    private func deal() {
+        viewModel.cards
+            .enumerated()
+            .forEach { index, card in
+                withAnimation(
+                    Constants.dealAnimation
+                        .delay(Double(index) * Constants.dealInterval)
+                ) {
+                    _ = dealt.insert(card.id)
+                }
+            }
+    }
+    
+    private func choose(_ card: CardView.Card) {
+        withAnimation {
+            let dateBeforeChoosing = viewModel.goalDate
+            viewModel.choose(card)
+            let timeChange = viewModel.goalDate
+                .timeIntervalSince(dateBeforeChoosing)
+            lastTimeChange = (timeChange, causedByCardId: card.id)
+        }
+    }
+    
+    @State private var lastTimeChange = (TimeInterval.zero, causedByCardId: "")
+    
     private func timeChange(causedBy card: CardView.Card) -> Int {
-        .zero
+        let (amount, id) = lastTimeChange
+        return card.id == id ? Int(amount) : .zero
     }
 }
 
-struct EmojiMemotyGameView_Previews: PreviewProvider {
+struct EmojiMemoryGameView_Previews: PreviewProvider {
     static var previews: some View {
         EmojiMemoryGameView(viewModel: EmojiMemoryGame())
     }

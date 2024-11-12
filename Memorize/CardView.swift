@@ -38,29 +38,28 @@ struct CardView: View {
     }
     
     var body: some View {
-        Pie(endAngle: .degrees(240))
-            .fill(gradient)
-            .opacity(Constants.Pie.opacity)
-            .overlay(
-                Text(card.content)
-                    .font(.system(size: Constants.FontSize.largest))
-                    .minimumScaleFactor(Constants.FontSize.scaleFactor)
-                    .aspectRatio(contentMode: .fit)
-                    .padding(Constants.Pie.inset)
-                    .rotationEffect(.degrees(card.isMatched ? 360 : 0))
-                    .animation(.spin(duration: 1), value: card.isMatched)
-            )
-            .padding(Constants.inset)
-            .cardify(isFaceUp: card.isFaceUp, gradient: gradient)
-            .opacity(card.isFaceUp || !card.isMatched ? 1 : 0)
+        TimelineView(.animation) { _ in
+            if card.isFaceUp || !card.isMatched {
+                Pie(endAngle: .degrees(card.bonusPercentRemaining * 360))
+                    .fill(gradient)
+                    .opacity(Constants.Pie.opacity)
+                    .overlay(cardContents.padding(Constants.Pie.inset))
+                    .padding(Constants.inset)
+                    .cardify(isFaceUp: card.isFaceUp, gradient: gradient)
+                    .transition(.scale)
+            } else {
+                Color.clear
+            }
+        }
     }
-}
-
-extension Animation {
     
-    static func spin(duration: TimeInterval) -> Self {
-        .linear(duration: duration)
-        .repeatForever(autoreverses: false)
+    var cardContents: some View {
+        Text(card.content)
+            .font(.system(size: Constants.FontSize.largest))
+            .minimumScaleFactor(Constants.FontSize.scaleFactor)
+            .aspectRatio(contentMode: .fit)
+            .rotationEffect(.degrees(card.isMatched ? 360 : 0))
+            .animation(.easeInOut(duration: 1), value: card.isMatched)
     }
 }
 
@@ -72,14 +71,14 @@ extension Animation {
             CardView(
                 Card(
                     isFaceUp: true,
-                    content: "X",
+                    content: "?",
                     id: "test1"
                 ),
                 colors: [.orange]
             )
             CardView(
                 Card(
-                    content: "X",
+                    content: "?",
                     id: "test1"
                 ),
                 colors: [.orange]
@@ -90,7 +89,7 @@ extension Animation {
                 Card(
                     isFaceUp: true,
                     isMatched: true,
-                    content: "X",
+                    content: "?",
                     id: "test1"
                 ),
                 colors: [.red, .blue]
@@ -98,7 +97,7 @@ extension Animation {
             CardView(
                 Card(
                     isMatched: true,
-                    content: "X",
+                    content: "?",
                     id: "test1"
                 ),
                 colors: [.red, .blue]
