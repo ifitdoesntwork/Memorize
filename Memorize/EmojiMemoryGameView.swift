@@ -133,6 +133,8 @@ struct EmojiMemoryGameView: View {
 
 struct EmojiMemoryGameView_Previews: PreviewProvider {
     static var previews: some View {
-        EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+        EmojiMemoryGameView(
+            viewModel: .init(theme: .suggestions.randomElement()!)
+        )
     }
 }

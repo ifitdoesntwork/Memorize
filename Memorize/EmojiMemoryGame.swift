@@ -28,22 +28,12 @@ class EmojiMemoryGame: ObservableObject {
         }
     }
     
-    private static var models: (Theme, MemoryGame<String>) {
-        let suggestion = Theme.suggestions
-            .randomElement()
-        ?? .random
-        
-        return (
-            suggestion,
-            createMemoryGame(themed: suggestion)
-        )
-    }
-    
-    private var theme: Theme
+    let theme: Theme
     @Published private var model: MemoryGame<String>
     
-    init() {
-        (theme, model) = Self.models
+    init(theme: Theme) {
+        self.theme = theme
+        model = Self.createMemoryGame(themed: theme)
     }
     
     var cards: [Card] {
@@ -74,7 +64,7 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func restart() {
-        (theme, model) = Self.models
+        model = Self.createMemoryGame(themed: theme)
     }
 }
 

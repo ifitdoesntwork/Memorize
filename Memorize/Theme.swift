@@ -9,13 +9,13 @@ import Foundation
 
 struct Theme {
     
-    enum Emoji: CaseIterable {
+    enum Emoji {
         case halloween
         case sports
         case animals
     }
     
-    enum Color: CaseIterable {
+    enum Color {
         case orange
         case red
         case blue
@@ -65,13 +65,4 @@ struct Theme {
             colors: [.orange]
         )
     ]
-    
-    static var random: Self {
-        Theme(
-            name: "Random",
-            emoji: Emoji.allCases.randomElement()!,
-            numberOfPairs: Int.random(in: 2..<20),
-            colors: [Color.allCases.randomElement()!]
-        )
-    }
 }
