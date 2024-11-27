@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Theme {
+struct Theme: Identifiable {
     
     enum Emoji {
         case halloween
@@ -22,6 +22,7 @@ struct Theme {
         case green
     }
     
+    let id = UUID()
     let name: String
     let emoji: Emoji
     let numberOfPairs: Int?

@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct ThemeChooser: View {
+    @ObservedObject var store: ThemeStore
     
     var body: some View {
         NavigationStack {
-            List(Theme.suggestions, id: \.name) { theme in
+            List(store.themes) { theme in
                 NavigationLink {
                     EmojiMemoryGameView(viewModel: .init(theme: theme))
                         .navigationTitle(theme.name)
@@ -21,6 +22,11 @@ struct ThemeChooser: View {
                 }
             }
             .navigationTitle("Themes")
+            .toolbar {
+                Button("", systemImage: "plus") {
+                    store.addTheme()
+                }
+            }
         }
     }
     
@@ -47,5 +53,5 @@ struct ThemeChooser: View {
 }
 
 #Preview {
-    ThemeChooser()
+    ThemeChooser(store: .init())
 }
