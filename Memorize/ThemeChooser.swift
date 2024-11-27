@@ -12,9 +12,30 @@ struct ThemeChooser: View {
     var body: some View {
         NavigationStack {
             List(Theme.suggestions, id: \.name) { theme in
-                Text(theme.name)
+                details(of: theme)
             }
             .navigationTitle("Theme")
+        }
+    }
+    
+    private func details(of theme: Theme) -> some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Text(theme.name)
+                    .foregroundStyle(
+                        Gradient(colors: theme.colors.map(\.uiColor))
+                    )
+                
+                Spacer()
+                
+                if let numberOfPairs = theme.numberOfPairs {
+                    Text("\(numberOfPairs * 2) Cards")
+                } else {
+                    Text("\(theme.emojis.count * 2) or Less Cards")
+                }
+            }
+            Text(theme.emojis.joined())
+                .lineLimit(1)
         }
     }
 }
