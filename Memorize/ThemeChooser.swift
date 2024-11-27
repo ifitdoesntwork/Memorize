@@ -12,9 +12,15 @@ struct ThemeChooser: View {
     var body: some View {
         NavigationStack {
             List(Theme.suggestions, id: \.name) { theme in
-                details(of: theme)
+                NavigationLink {
+                    EmojiMemoryGameView(viewModel: .init(theme: theme))
+                        .navigationTitle(theme.name)
+                        .navigationBarTitleDisplayMode(.inline)
+                } label: {
+                    details(of: theme)
+                }
             }
-            .navigationTitle("Theme")
+            .navigationTitle("Themes")
         }
     }
     

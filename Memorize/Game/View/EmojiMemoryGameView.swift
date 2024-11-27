@@ -19,9 +19,11 @@ struct EmojiMemoryGameView: View {
     
     var body: some View {
         VStack {
-            panel
+            ZStack {
+                panel
+                deck
+            }
             cards
-            deck
         }
         .padding()
     }
@@ -34,9 +36,6 @@ struct EmojiMemoryGameView: View {
             )
             
             Spacer()
-            
-            Text(viewModel.name)
-                .animation(nil)
             
             Button {
                 withAnimation {
