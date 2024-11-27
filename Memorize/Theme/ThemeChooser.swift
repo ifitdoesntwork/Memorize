@@ -12,19 +12,24 @@ struct ThemeChooser: View {
     
     var body: some View {
         NavigationStack {
-            List(store.themes) { theme in
-                NavigationLink {
-                    EmojiMemoryGameView(viewModel: .init(theme: theme))
-                        .navigationTitle(theme.name)
-                        .navigationBarTitleDisplayMode(.inline)
-                } label: {
-                    details(of: theme)
+            List {
+                ForEach(store.themes) { theme in
+                    NavigationLink {
+                        EmojiMemoryGameView(viewModel: .init(theme: theme))
+                            .navigationTitle(theme.name)
+                            .navigationBarTitleDisplayMode(.inline)
+                    } label: {
+                        details(of: theme)
+                    }
+                }
+                .onDelete { indexSet in
+                    store.remove(atOffsets: indexSet)
                 }
             }
             .navigationTitle("Themes")
             .toolbar {
                 Button("", systemImage: "plus") {
-                    store.addTheme()
+                    store.add()
                 }
             }
         }

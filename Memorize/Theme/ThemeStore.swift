@@ -14,12 +14,18 @@ class ThemeStore: ObservableObject {
         model
     }
     
-    func addTheme() {
-        model.append(.init(
-            name: "New Theme",
-            emoji: .animals,
-            numberOfPairs: 4,
-            colors: [.blue, .orange, .green]
-        ))
+    func add() {
+        model
+            .append(.init(
+                name: "New Theme",
+                emoji: .animals,
+                numberOfPairs: 4,
+                colors: [.blue, .orange, .green]
+            ))
+    }
+    
+    func remove(atOffsets offsets: IndexSet) {
+        model
+            .remove(atOffsets: offsets)
     }
 }
