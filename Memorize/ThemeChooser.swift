@@ -8,8 +8,14 @@
 import SwiftUI
 
 struct ThemeChooser: View {
+    
     var body: some View {
-        Text("Theme Chooser")
+        NavigationStack {
+            List(Theme.suggestions, id: \.name) { theme in
+                Text(theme.name)
+            }
+            .navigationTitle("Theme")
+        }
     }
 }
 
