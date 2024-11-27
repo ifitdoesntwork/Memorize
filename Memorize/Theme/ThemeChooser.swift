@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ThemeChooser: View {
     @ObservedObject var store: ThemeStore
+    @State var showsThemeEditor = false
     
     var body: some View {
         NavigationStack {
@@ -25,10 +26,18 @@ struct ThemeChooser: View {
                 .onDelete { indexSet in
                     store.remove(atOffsets: indexSet)
                 }
+                .swipeActions(edge: .leading) {
+                    Button("Edit", systemImage: "slider.horizontal.3") {
+                        showsThemeEditor = true
+                    }
+                }
+            }
+            .sheet(isPresented: $showsThemeEditor) {
+                Text("Theme Editor")
             }
             .navigationTitle("Themes")
             .toolbar {
-                Button("", systemImage: "plus") {
+                Button("Add", systemImage: "plus") {
                     store.add()
                 }
             }

@@ -34,7 +34,7 @@ struct Cardify: ViewModifier, Animatable {
             
             Group {
                 base
-                    .fill(.white)
+                    .fill(.background)
                 base
                     .strokeBorder(gradient, lineWidth: Constants.lineWidth)
                 content
