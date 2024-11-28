@@ -67,10 +67,10 @@ struct ThemeChooser: View {
                 if let numberOfPairs = theme.numberOfPairs {
                     Text("\(numberOfPairs * 2) Cards")
                 } else {
-                    Text("\(theme.emojis.count * 2) or Less Cards")
+                    Text("\(theme.emoji.count * 2) or Less Cards")
                 }
             }
-            Text(theme.emojis.joined())
+            Text(String(theme.emoji))
                 .lineLimit(1)
         }
     }

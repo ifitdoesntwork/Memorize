@@ -7,29 +7,6 @@
 
 import SwiftUI
 
-extension Theme {
-    
-    var emojis: [String] {
-        switch emoji {
-        case .halloween:
-            return [
-                "👻", "🎃", "🕷️", "😈", "💀", "🕸️",
-                "🧙‍♀️", "🙀", "👹", "😱", "☠️", "🍭"
-            ]
-        case .sports:
-            return [
-                "⚽️", "🏀", "🏈", "⚾️", "🎾",
-                "🏸", "🧘‍♀️", "🏄‍♀️", "🏊‍♀️", "🚴‍♀️"
-            ]
-        case .animals:
-            return [
-                "🐶", "🐱", "🐭", "🐹",
-                "🐰", "🦊", "🐻", "🐼"
-            ]
-        }
-    }
-}
-
 extension Theme.Color {
     
     var uiColor: Color {

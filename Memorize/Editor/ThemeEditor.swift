@@ -10,13 +10,39 @@ import SwiftUI
 struct ThemeEditor: View {
     @Binding var theme: Theme
     
+    enum FocusedField {
+        case name
+        case addEmoji
+    }
+    
+    @FocusState private var focusedField: FocusedField?
+    
     var body: some View {
         Form {
-            Text(theme.name)
+            Section("Name") {
+                TextField("Name", text: $theme.name)
+                    .focused($focusedField, equals: .name)
+            }
+            Section("Emoji") {
+                EmojiEditor(emoji: $theme.emoji)
+                    .focused($focusedField, equals: .addEmoji)
+            }
+        }
+        .onAppear {
+            focusedField = theme.name.isEmpty 
+                ? .name : .addEmoji
         }
     }
 }
 
 #Preview {
-    ThemeEditor(theme: .constant(.suggestions[0]))
+    struct Preview: View {
+        @State var theme = Theme.suggestions[0]
+        
+        var body: some View {
+            ThemeEditor(theme: $theme)
+        }
+    }
+    
+    return Preview()
 }

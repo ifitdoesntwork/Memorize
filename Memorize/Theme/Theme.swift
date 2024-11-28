@@ -9,12 +9,6 @@ import Foundation
 
 struct Theme: Identifiable {
     
-    enum Emoji {
-        case halloween
-        case sports
-        case animals
-    }
-    
     enum Color {
         case orange
         case red
@@ -23,10 +17,31 @@ struct Theme: Identifiable {
     }
     
     let id = UUID()
-    let name: String
-    let emoji: Emoji
+    var name: String
+    var emoji: [Character]
     let numberOfPairs: Int?
     let colors: [Color]
+}
+
+private extension Array where Element == Character {
+    
+    static let halloween: [Character] = [
+        "👻", "🎃", "🕷️", "😈", "💀", "🕸️",
+        "🧙‍♀️", "🙀", "👹", "😱", "☠️", "🍭"
+    ]
+    
+    static let sports: [Character] = [
+        "⚽️", "🏀", "🏈", "⚾️", "🎾",
+        "🏸", "🧘‍♀️", "🏄‍♀️", "🏊‍♀️", "🚴‍♀️"
+    ]
+    
+    static let animals: [Character] = [
+        "🐶", "🐱", "🐭", "🐹",
+        "🐰", "🦊", "🐻", "🐼"
+    ]
+}
+
+extension Theme {
     
     static let suggestions = [
         Theme(

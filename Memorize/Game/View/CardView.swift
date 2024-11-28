@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CardView: View {
     
-    typealias Card = MemoryGame<String>.Card
+    typealias Card = MemoryGame<Character>.Card
     
     let card: Card
     let gradient: Gradient
@@ -54,7 +54,7 @@ struct CardView: View {
     }
     
     var cardContents: some View {
-        Text(card.content)
+        Text(String(card.content))
             .font(.system(size: Constants.FontSize.largest))
             .minimumScaleFactor(Constants.FontSize.scaleFactor)
             .aspectRatio(contentMode: .fit)
