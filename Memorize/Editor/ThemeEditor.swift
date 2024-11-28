@@ -27,10 +27,29 @@ struct ThemeEditor: View {
                 EmojiEditor(emoji: $theme.emoji)
                     .focused($focusedField, equals: .addEmoji)
             }
+            Section("Number of Cards") {
+                numberOfCards
+            }
         }
         .onAppear {
             focusedField = theme.name.isEmpty 
                 ? .name : .addEmoji
+        }
+    }
+    
+    @ViewBuilder
+    var numberOfCards: some View {
+        Toggle(
+            "Randomize",
+            isOn: $theme.isRandomNumberOfCards
+        )
+        
+        if let numberOfPairs = theme.numberOfPairs {
+            Stepper(
+                "Pairs of Cards: \(numberOfPairs)",
+                value: .init($theme.numberOfPairs)!,
+                in: theme.allowedNumberOfPairs
+            )
         }
     }
 }

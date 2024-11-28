@@ -18,9 +18,6 @@ class ThemeStore: ObservableObject {
     func add() {
         model
             .append(.init(
-                name: "",
-                emoji: [],
-                numberOfPairs: 4,
                 colors: [.blue, .orange, .green]
             ))
     }

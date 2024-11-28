@@ -17,27 +17,94 @@ struct Theme: Identifiable {
     }
     
     let id = UUID()
+    
     var name: String
-    var emoji: [Character]
-    let numberOfPairs: Int?
+    
+    var emoji: [Character] {
+        didSet {
+            if emoji.count < 2 {
+                emoji = oldValue
+            }
+            if !numberOfPairs.isLegit(for: emoji.count) {
+                numberOfPairs = emoji.count
+            }
+        }
+    }
+    
+    var numberOfPairs: Int? {
+        didSet {
+            if !numberOfPairs.isLegit(for: emoji.count) {
+                numberOfPairs = oldValue
+            }
+        }
+    }
+    
     let colors: [Color]
+    
+    init(
+        name: String = "",
+        emoji: [Character] = [],
+        numberOfPairs: Int? = nil,
+        colors: [Color]
+    ) {
+        self.name = name
+        
+        let emoji = emoji.count < 2 ? .minimum : emoji
+        self.emoji = emoji
+        
+        self.numberOfPairs = numberOfPairs.isLegit(for: emoji.count)
+            ? numberOfPairs : emoji.count
+        
+        self.colors = colors
+    }
+    
+    var isRandomNumberOfCards: Bool {
+        get { numberOfPairs == nil }
+        set { numberOfPairs = newValue ? nil : emoji.count }
+    }
+    
+    var allowedNumberOfPairs: ClosedRange<Int> {
+        emoji.count
+            .allowedNumberOfPairs
+    }
+}
+
+private extension Int? {
+    
+    func isLegit(for emojiCount: Int) -> Bool {
+        map {
+            emojiCount.allowedNumberOfPairs
+                .contains($0)
+        } ?? true
+    }
+}
+
+private extension Int {
+    
+    var allowedNumberOfPairs: ClosedRange<Int> {
+        2...self
+    }
 }
 
 private extension Array where Element == Character {
     
-    static let halloween: [Character] = [
+    static let halloween: Self = [
         "👻", "🎃", "🕷️", "😈", "💀", "🕸️",
         "🧙‍♀️", "🙀", "👹", "😱", "☠️", "🍭"
     ]
     
-    static let sports: [Character] = [
+    static let sports: Self = [
         "⚽️", "🏀", "🏈", "⚾️", "🎾",
         "🏸", "🧘‍♀️", "🏄‍♀️", "🏊‍♀️", "🚴‍♀️"
     ]
     
-    static let animals: [Character] = [
+    static let animals: Self = [
         "🐶", "🐱", "🐭", "🐹",
         "🐰", "🦊", "🐻", "🐼"
+    ]
+    
+    static let minimum: Self = [
+        "❓", "❗️"
     ]
 }
 

@@ -33,7 +33,7 @@ struct ThemeChooser: View {
                 }
             }
             .sheet(
-                isPresented: Binding(
+                isPresented: .init(
                     get: { selectedThemeId != nil },
                     set: { _ in selectedThemeId = nil }
                 )
