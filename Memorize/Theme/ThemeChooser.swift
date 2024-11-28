@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ThemeChooser: View {
     @ObservedObject var store: ThemeStore
-    @State var showsThemeEditor = false
+    @State var selectedThemeId: UUID?
     
     var body: some View {
         NavigationStack {
@@ -22,23 +22,33 @@ struct ThemeChooser: View {
                     } label: {
                         details(of: theme)
                     }
+                    .swipeActions(edge: .leading) {
+                        Button("Edit", systemImage: "slider.horizontal.3") {
+                            selectedThemeId = theme.id
+                        }
+                    }
                 }
                 .onDelete { indexSet in
                     store.remove(atOffsets: indexSet)
                 }
-                .swipeActions(edge: .leading) {
-                    Button("Edit", systemImage: "slider.horizontal.3") {
-                        showsThemeEditor = true
-                    }
-                }
             }
-            .sheet(isPresented: $showsThemeEditor) {
-                Text("Theme Editor")
+            .sheet(
+                isPresented: Binding(
+                    get: { selectedThemeId != nil },
+                    set: { _ in selectedThemeId = nil }
+                )
+            ) {
+                if let index = store.themes
+                    .firstIndex(where: { $0.id == selectedThemeId })
+                {
+                    ThemeEditor(theme: $store.themes[index])
+                }
             }
             .navigationTitle("Themes")
             .toolbar {
                 Button("Add", systemImage: "plus") {
                     store.add()
+                    selectedThemeId = store.themes.last?.id
                 }
             }
         }

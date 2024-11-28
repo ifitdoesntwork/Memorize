@@ -11,7 +11,8 @@ class ThemeStore: ObservableObject {
     @Published private var model = Theme.suggestions
     
     var themes: [Theme] {
-        model
+        get { model }
+        set { model = newValue }
     }
     
     func add() {
