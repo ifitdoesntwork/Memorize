@@ -59,7 +59,7 @@ struct ThemeChooser: View {
             HStack {
                 Text(theme.name)
                     .foregroundStyle(
-                        Gradient(colors: theme.colors.map(\.uiColor))
+                        Gradient(colors: theme.colors)
                     )
                 
                 Spacer()

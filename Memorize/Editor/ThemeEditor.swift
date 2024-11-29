@@ -17,6 +17,8 @@ struct ThemeEditor: View {
     
     @FocusState private var focusedField: FocusedField?
     
+    private let gridItemSize: CGFloat = 40
+    
     var body: some View {
         Form {
             Section("Name") {
@@ -24,11 +26,14 @@ struct ThemeEditor: View {
                     .focused($focusedField, equals: .name)
             }
             Section("Emoji") {
-                EmojiEditor(emoji: $theme.emoji)
+                EmojiEditor(emoji: $theme.emoji, gridItemSize: gridItemSize)
                     .focused($focusedField, equals: .addEmoji)
             }
             Section("Number of Cards") {
                 numberOfCards
+            }
+            Section("Color") {
+                colors
             }
         }
         .onAppear {
@@ -40,7 +45,7 @@ struct ThemeEditor: View {
     @ViewBuilder
     var numberOfCards: some View {
         Toggle(
-            "Randomize",
+            "Random",
             isOn: $theme.isRandomNumberOfCards
         )
         
@@ -51,6 +56,42 @@ struct ThemeEditor: View {
                 in: theme.allowedNumberOfPairs
             )
         }
+    }
+    
+    @ViewBuilder
+    var colors: some View {
+        LazyVGrid(
+            columns: [.init(.adaptive(minimum: gridItemSize))]
+        ) {
+            ForEach(theme.colors) { color in
+                if let index = theme.colors
+                    .firstIndex(where: { $0.id == color.id})
+                {
+                    ColorPicker(
+                        "",
+                        selection: $theme.colors[index].uiColor
+                    )
+                    .labelsHidden()
+                }
+            }
+        }
+        
+        Stepper(
+            "Colors",
+            value: .init(
+                get: {
+                    theme.colors.count
+                },
+                set: {
+                    if $0 > theme.colors.count {
+                        theme.colors.append(.init(color: .gray))
+                    } else {
+                        theme.colors.removeLast()
+                    }
+                }
+            ),
+            in: 1...Int.max
+        )
     }
 }
 

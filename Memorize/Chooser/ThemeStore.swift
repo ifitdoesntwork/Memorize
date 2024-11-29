@@ -17,9 +17,7 @@ class ThemeStore: ObservableObject {
     
     func add() {
         model
-            .append(.init(
-                colors: [.blue, .orange, .green]
-            ))
+            .append(.init(colors: [.gray]))
     }
     
     func remove(atOffsets offsets: IndexSet) {

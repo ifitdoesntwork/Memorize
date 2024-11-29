@@ -9,10 +9,11 @@ import SwiftUI
 
 struct EmojiEditor: View {
     @Binding var emoji: [Character]
+    let gridItemSize: CGFloat
     
     @State private var emojiToAdd = ""
     
-    private let emojiFont = Font.system(size: 40)
+    private var emojiFont: Font { .system(size: gridItemSize) }
     
     var body: some View {
         VStack {
@@ -41,7 +42,9 @@ struct EmojiEditor: View {
                 .font(.caption)
                 .foregroundStyle(.gray)
             
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 40))]) {
+            LazyVGrid(
+                columns: [.init(.adaptive(minimum: gridItemSize))]
+            ) {
                 ForEach(emoji, id: \.self) { symbol in
                     Text(String(symbol))
                         .font(emojiFont)
@@ -62,7 +65,10 @@ struct EmojiEditor: View {
         @State var emoji = Theme.suggestions[0].emoji
         
         var body: some View {
-            EmojiEditor(emoji: $emoji)
+            EmojiEditor(
+                emoji: $emoji,
+                gridItemSize: 40
+            )
         }
     }
     
