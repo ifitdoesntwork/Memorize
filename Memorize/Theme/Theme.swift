@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct Theme: Identifiable {
+struct Theme: Identifiable, Codable {
     
-    struct Color: Identifiable {
-        let id = UUID()
+    struct Color: Identifiable, Codable {
+        var id = UUID()
         
         let red: Double
         let green: Double
@@ -25,7 +25,7 @@ struct Theme: Identifiable {
         )
     }
     
-    let id = UUID()
+    var id = UUID()
     
     var name: String
     

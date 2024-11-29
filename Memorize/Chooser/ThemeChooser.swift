@@ -13,43 +13,50 @@ struct ThemeChooser: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(store.themes) { theme in
-                    NavigationLink {
-                        EmojiMemoryGameView(viewModel: .init(theme: theme))
-                            .navigationTitle(theme.name)
-                            .navigationBarTitleDisplayMode(.inline)
-                    } label: {
-                        details(of: theme)
+            themes
+                .navigationTitle("Themes")
+                .toolbar {
+                    Button("Reset", systemImage: "arrow.circlepath") {
+                        store.reset()
                     }
-                    .swipeActions(edge: .leading) {
-                        Button("Edit", systemImage: "slider.horizontal.3") {
-                            selectedThemeId = theme.id
-                        }
+                    Button("Add", systemImage: "plus") {
+                        store.add()
+                        selectedThemeId = store.themes.last?.id
                     }
                 }
-                .onDelete { indexSet in
-                    store.remove(atOffsets: indexSet)
+        }
+    }
+    
+    private var themes: some View {
+        List {
+            ForEach(store.themes) { theme in
+                NavigationLink {
+                    EmojiMemoryGameView(viewModel: .init(theme: theme))
+                        .navigationTitle(theme.name)
+                        .navigationBarTitleDisplayMode(.inline)
+                } label: {
+                    details(of: theme)
+                }
+                .swipeActions(edge: .leading) {
+                    Button("Edit", systemImage: "slider.horizontal.3") {
+                        selectedThemeId = theme.id
+                    }
                 }
             }
-            .sheet(
-                isPresented: .init(
-                    get: { selectedThemeId != nil },
-                    set: { _ in selectedThemeId = nil }
-                )
-            ) {
-                if let index = store.themes
-                    .firstIndex(where: { $0.id == selectedThemeId })
-                {
-                    ThemeEditor(theme: $store.themes[index])
-                }
+            .onDelete {
+                store.remove(atOffsets: $0)
             }
-            .navigationTitle("Themes")
-            .toolbar {
-                Button("Add", systemImage: "plus") {
-                    store.add()
-                    selectedThemeId = store.themes.last?.id
-                }
+        }
+        .sheet(
+            isPresented: .init(
+                get: { selectedThemeId != nil },
+                set: { _ in selectedThemeId = nil }
+            )
+        ) {
+            if let index = store.themes
+                .firstIndex(where: { $0.id == selectedThemeId })
+            {
+                ThemeEditor(theme: $store.themes[index])
             }
         }
     }
