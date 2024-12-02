@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EmojiEditor: View {
-    @Binding var emoji: [Character]
+    @Binding var emoji: Emoji
     let gridItemSize: CGFloat
     
     @State private var emojiToAdd = ""
@@ -16,10 +16,10 @@ struct EmojiEditor: View {
     private var emojiFont: Font { .system(size: gridItemSize) }
     
     var body: some View {
-        VStack {
-            addEmoji
-            Divider()
-            removeEmoji
+        addEmoji
+        removeEmoji(isIncluded: true)
+        if !emoji[isIncluded: false].isEmpty {
+            removeEmoji(isIncluded: false)
         }
     }
     
@@ -27,8 +27,8 @@ struct EmojiEditor: View {
         TextField("Add Emoji Here", text: $emojiToAdd)
             .font(emojiFont)
             .onChange(of: emojiToAdd) {
-                emoji
-                    .appendIfUniqueEmoji($0)
+                $0.last
+                    .map { emoji.add($0) }
                 
                 emojiToAdd = emojiToAdd.last
                     .map(String.init)
@@ -36,22 +36,24 @@ struct EmojiEditor: View {
             }
     }
     
-    private var removeEmoji: some View {
+    private func removeEmoji(
+        isIncluded: Bool
+    ) -> some View {
         VStack(alignment: .trailing) {
-            Text("Tap to Remove Emoji")
+            Text(isIncluded ? "Tap to Remove Emoji" : "Tap to Recover Emoji")
                 .font(.caption)
                 .foregroundStyle(.gray)
             
             LazyVGrid(
                 columns: [.init(.adaptive(minimum: gridItemSize))]
             ) {
-                ForEach(emoji, id: \.self) { symbol in
+                ForEach(emoji[isIncluded: isIncluded], id: \.self) { symbol in
                     Text(String(symbol))
                         .font(emojiFont)
                         .onTapGesture {
                             withAnimation {
                                 emoji
-                                    .remove(symbol: symbol)
+                                    .remove(symbol, isIncluded: isIncluded)
                             }
                         }
                 }

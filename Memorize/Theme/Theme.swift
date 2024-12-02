@@ -29,20 +29,20 @@ struct Theme: Identifiable, Codable {
     
     var name: String
     
-    var emoji: [Character] {
+    var emoji: Emoji {
         didSet {
-            if emoji.count < 2 {
+            if emojiCount < 2 {
                 emoji = oldValue
             }
-            if !numberOfPairs.isLegit(for: emoji.count) {
-                numberOfPairs = emoji.count
+            if !numberOfPairs.isLegit(for: emojiCount) {
+                numberOfPairs = emojiCount
             }
         }
     }
     
     var numberOfPairs: Int? {
         didSet {
-            if !numberOfPairs.isLegit(for: emoji.count) {
+            if !numberOfPairs.isLegit(for: emojiCount) {
                 numberOfPairs = oldValue
             }
         }
@@ -65,7 +65,7 @@ struct Theme: Identifiable, Codable {
         self.name = name
         
         let emoji = emoji.count < 2 ? .minimum : emoji
-        self.emoji = emoji
+        self.emoji = .init(symbols: emoji)
         
         self.numberOfPairs = numberOfPairs.isLegit(for: emoji.count)
             ? numberOfPairs : emoji.count
@@ -76,12 +76,17 @@ struct Theme: Identifiable, Codable {
     
     var isRandomNumberOfCards: Bool {
         get { numberOfPairs == nil }
-        set { numberOfPairs = newValue ? nil : emoji.count }
+        set { numberOfPairs = newValue ? nil : emojiCount }
     }
     
     var allowedNumberOfPairs: ClosedRange<Int> {
-        emoji.count
+        emojiCount
             .allowedNumberOfPairs
+    }
+    
+    var emojiCount: Int {
+        emoji[isIncluded: true]
+            .count
     }
 }
 

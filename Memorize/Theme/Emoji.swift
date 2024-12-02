@@ -1,5 +1,5 @@
 //
-//  Character+Emoji.swift
+//  Emoji.swift
 //  Memorize
 //
 //  Created by Denis Avdeev on 29.11.2024.
@@ -7,10 +7,37 @@
 
 import Foundation
 
-extension Array where Element == Character {
+struct Emoji: Codable {
+    private var symbols: [Bool: [Character]]
     
-    mutating func appendIfUniqueEmoji(_ symbol: String) {
-        self = (self + symbol)
+    subscript(isIncluded isIncluded: Bool) -> [Character] {
+        symbols[isIncluded] ?? []
+    }
+    
+    mutating func add(_ symbol: Character) {
+        symbols[true]?
+            .appendIfUniqueEmoji(symbol)
+    }
+    
+    mutating func remove(_ symbol: Character, isIncluded: Bool) {
+        symbols[isIncluded]?
+            .removeAll { $0 == symbol }
+        symbols[!isIncluded]?
+            .appendIfUniqueEmoji(symbol)
+    }
+    
+    init(symbols: [Character]) {
+        self.symbols = [
+            true: symbols,
+            false: []
+        ]
+    }
+}
+
+private extension Array where Element == Character {
+    
+    mutating func appendIfUniqueEmoji(_ symbol: Character) {
+        self = (self + [symbol])
             .filter(\.isEmoji)
             .uniqued
     }

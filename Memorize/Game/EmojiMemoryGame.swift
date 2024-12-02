@@ -14,7 +14,7 @@ class EmojiMemoryGame: ObservableObject {
     private static func createMemoryGame(
         themed theme: Theme
     ) -> MemoryGame<Character> {
-        let emoji = theme.emoji
+        let emoji = theme.emoji[isIncluded: true]
             .shuffled()
         
         return MemoryGame(
