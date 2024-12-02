@@ -51,7 +51,7 @@ struct ThemeEditor: View {
         
         if let numberOfPairs = theme.numberOfPairs {
             Stepper(
-                "Pairs of Cards: \(numberOfPairs)",
+                "\(numberOfPairs) Pairs of Cards",
                 value: .init($theme.numberOfPairs)!,
                 in: theme.allowedNumberOfPairs
             )

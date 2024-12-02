@@ -26,6 +26,8 @@ struct EmojiMemoryGameView: View {
             cards
         }
         .padding()
+        .navigationTitle(viewModel.name)
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     var panel: some View {

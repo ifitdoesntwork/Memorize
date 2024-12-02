@@ -9,10 +9,11 @@ import SwiftUI
 
 struct ThemeChooser: View {
     @ObservedObject var store: ThemeStore
-    @State var selectedThemeId: UUID?
+    @State private var selectedThemeId: UUID?
+    @State private var editedThemeId: UUID?
     
     var body: some View {
-        NavigationStack {
+        NavigationSplitView {
             themes
                 .navigationTitle("Themes")
                 .toolbar {
@@ -21,25 +22,32 @@ struct ThemeChooser: View {
                     }
                     Button("Add", systemImage: "plus") {
                         store.add()
-                        selectedThemeId = store.themes.last?.id
+                        editedThemeId = store.themes.last?.id
                     }
                 }
+        } detail: {
+            if 
+                let selectedThemeId,
+                let theme = store.themes
+                    .first(where: { $0.id == selectedThemeId })
+            {
+                EmojiMemoryGameView(viewModel: .init(theme: theme))
+            } else {
+                Text("Choose a theme")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
         }
     }
     
     private var themes: some View {
-        List {
+        List(selection: $selectedThemeId) {
             ForEach(store.themes) { theme in
-                NavigationLink {
-                    EmojiMemoryGameView(viewModel: .init(theme: theme))
-                        .navigationTitle(theme.name)
-                        .navigationBarTitleDisplayMode(.inline)
-                } label: {
+                NavigationLink(value: theme.id) {
                     details(of: theme)
                 }
                 .swipeActions(edge: .leading) {
                     Button("Edit", systemImage: "slider.horizontal.3") {
-                        selectedThemeId = theme.id
+                        editedThemeId = theme.id
                     }
                 }
             }
@@ -49,12 +57,12 @@ struct ThemeChooser: View {
         }
         .sheet(
             isPresented: .init(
-                get: { selectedThemeId != nil },
-                set: { _ in selectedThemeId = nil }
+                get: { editedThemeId != nil },
+                set: { _ in editedThemeId = nil }
             )
         ) {
             if let index = store.themes
-                .firstIndex(where: { $0.id == selectedThemeId })
+                .firstIndex(where: { $0.id == editedThemeId })
             {
                 ThemeEditor(theme: $store.themes[index])
             }
@@ -63,21 +71,23 @@ struct ThemeChooser: View {
     
     private func details(of theme: Theme) -> some View {
         VStack(alignment: .leading) {
-            HStack {
-                Text(theme.name)
-                    .foregroundStyle(
-                        Gradient(colors: theme.colors)
-                    )
-                
-                Spacer()
-                
-                if let numberOfPairs = theme.numberOfPairs {
-                    Text("\(numberOfPairs * 2) Cards")
-                } else {
-                    Text("\(theme.emojiCount * 2) or Less Cards")
-                }
+            Text(theme.name)
+                .font(.title)
+                .foregroundStyle(
+                    Gradient(colors: theme.colors)
+                )
+            
+            let prefix = if let numberOfPairs = theme.numberOfPairs {
+                "\(numberOfPairs * 2)"
+            } else {
+                "\(theme.emojiCount * 2) or less"
             }
-            Text(String(theme.emoji[isIncluded: true]))
+            
+            let subtitle = prefix
+            + " from "
+            + .init(theme.emoji[isIncluded: true])
+            
+            Text(subtitle)
                 .lineLimit(1)
         }
     }
