@@ -28,21 +28,36 @@ struct EmojiMemoryGameView: View {
         .padding()
         .navigationTitle(viewModel.name)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            if viewModel.isDealt {
+                deal()
+            }
+        }
+        .onChange(of: viewModel.theme.id) {
+            reset()
+            if viewModel.isDealt {
+                deal()
+            }
+        }
+        .onChange(of: viewModel.isDealt) {
+            if !$1 {
+                reset()
+            }
+        }
     }
     
     var panel: some View {
         HStack {
             Text(
-                timerInterval: Date.now...viewModel.goalDate,
-                pauseTime: viewModel.endDate
+                timerInterval: viewModel.timerInterval,
+                pauseTime: viewModel.pauseTime
             )
             
             Spacer()
             
             Button {
                 withAnimation {
-                    dealt.removeAll()
-                    lastTimeChange = (TimeInterval.zero, causedByCardId: "")
+                    reset(animated: true)
                     viewModel.restart()
                 }
             } label: {
@@ -61,7 +76,9 @@ struct EmojiMemoryGameView: View {
             if isDealt(card) {
                 CardView(card, colors: viewModel.colors)
                     .matchedGeometryEffect(id: card.id, in: dealing)
-                    .transition(.asymmetric(insertion: .identity, removal: .identity))
+                    .transition(
+                        .asymmetric(insertion: .identity, removal: .identity)
+                    )
                     .padding(4)
                     .overlay(FlyingNumber(number: timeChange(causedBy: card)))
                     .zIndex(timeChange(causedBy: card) != .zero ? 100 : 0)
@@ -89,7 +106,9 @@ struct EmojiMemoryGameView: View {
             ForEach(undealtCards) { card in
                 CardView(card, colors: viewModel.colors)
                     .matchedGeometryEffect(id: card.id, in: dealing)
-                    .transition(.asymmetric(insertion: .identity, removal: .identity))
+                    .transition(
+                        .asymmetric(insertion: .identity, removal: .identity)
+                    )
             }
         }
         .frame(
@@ -97,30 +116,46 @@ struct EmojiMemoryGameView: View {
             height: Constants.deckWidth / Constants.aspectRatio
         )
         .onTapGesture {
-            deal()
+            viewModel.deal()
+            deal(animated: true)
         }
     }
     
-    private func deal() {
+    private func deal(animated isAnimated: Bool = false) {
         viewModel.cards
             .enumerated()
             .forEach { index, card in
-                withAnimation(
-                    Constants.dealAnimation
+                let animation = isAnimated
+                    ? Constants.dealAnimation
                         .delay(Double(index) * Constants.dealInterval)
-                ) {
+                    : nil
+                
+                withAnimation(animation) {
                     _ = dealt.insert(card.id)
                 }
             }
     }
     
+    private func reset(animated isAnimated: Bool = false) {
+        withAnimation(isAnimated ? .default : .linear(duration: .zero)) {
+            dealt.removeAll()
+            lastTimeChange = (TimeInterval.zero, causedByCardId: "")
+        }
+    }
+    
     private func choose(_ card: CardView.Card) {
         withAnimation {
-            let dateBeforeChoosing = viewModel.goalDate
-            viewModel.choose(card)
-            let timeChange = viewModel.goalDate
-                .timeIntervalSince(dateBeforeChoosing)
-            lastTimeChange = (timeChange, causedByCardId: card.id)
+            viewModel.goalDate
+                .map { dateBeforeChoosing in
+                    viewModel.choose(card)
+                    viewModel.goalDate
+                        .map {
+                            lastTimeChange = (
+                                $0.timeIntervalSince(dateBeforeChoosing),
+                                causedByCardId: card.id
+                            )
+                        }
+                }
         }
     }
     

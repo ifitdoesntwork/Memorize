@@ -9,8 +9,12 @@ import Foundation
 
 struct MemoryGame<CardContent> where CardContent: Equatable {
     private(set) var cards: [Card]
-    private(set) var goalDate: Date
+    private(set) var goalDate: Date?
     private(set) var endDate: Date?
+    
+    var isDealt: Bool {
+        goalDate != nil
+    }
     
     init(
         numberOfPairsOfCards: Int,
@@ -23,7 +27,6 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             cards.append(Card(content: content, id: "\(pairIndex)b"))
         }
         cards.shuffle()
-        goalDate = Date(timeIntervalSinceNow: TimeInterval(10 * cards.count))
     }
     
     private var indexOfTheOneAndOnlyFaceUpCard: Int? {
@@ -44,6 +47,14 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             .count
     }
     
+    var gameSpan: TimeInterval {
+        TimeInterval(3 * cards.count)
+    }
+    
+    mutating func deal() {
+        goalDate = Date(timeIntervalSinceNow: gameSpan)
+    }
+    
     mutating func choose(_ card: Card) {
         if let chosenIndex = cards.firstIndex(where: { $0.id == card.id }) {
             if !cards[chosenIndex].isFaceUp && !cards[chosenIndex].isMatched {
@@ -51,8 +62,8 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                     if cards[chosenIndex].content == cards[potentialMatchIndex].content {
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchIndex].isMatched = true
-                        goalDate.addTimeInterval(
-                            20 + cards[chosenIndex].bonus + cards[potentialMatchIndex].bonus
+                        goalDate?.addTimeInterval(
+                            cards[chosenIndex].bonus + cards[potentialMatchIndex].bonus
                         )
                         if unmatchedCardsCount == .zero {
                             endDate = goalDate
@@ -60,7 +71,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                     } else {
                         for index in [chosenIndex, potentialMatchIndex] {
                             if cards[index].isPreviouslySeen {
-                                goalDate.addTimeInterval(-10)
+                                goalDate?.addTimeInterval(-5)
                             } else {
                                 cards[index].isPreviouslySeen = true
                             }

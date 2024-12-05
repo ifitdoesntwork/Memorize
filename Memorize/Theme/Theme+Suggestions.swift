@@ -14,37 +14,37 @@ extension Theme {
             name: "Halloween",
             emoji: .halloween,
             numberOfPairs: 12,
-            colors: [.orange, .red]
+            colors: [.orange, .red].theme
         ),
         Theme(
             name: "Sports",
             emoji: .sports,
             numberOfPairs: nil,
-            colors: [.red, .blue]
+            colors: [.red, .blue].theme
         ),
         Theme(
             name: "Animals",
             emoji: .animals,
             numberOfPairs: 8,
-            colors: [.green]
+            colors: [.green].theme
         ),
         Theme(
             name: "October",
             emoji: .halloween,
             numberOfPairs: nil,
-            colors: [.red]
+            colors: [.red].theme
         ),
         Theme(
             name: "Big Sports",
             emoji: .sports,
             numberOfPairs: 10,
-            colors: [.blue]
+            colors: [.blue].theme
         ),
         Theme(
             name: "My Pets",
             emoji: .animals,
             numberOfPairs: 3,
-            colors: [.orange]
+            colors: [.orange].theme
         )
     ]
 }

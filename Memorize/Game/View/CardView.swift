@@ -25,7 +25,6 @@ struct CardView: View {
         
         struct Pie {
             static let opacity: CGFloat = 0.5
-            static let inset: CGFloat = 12
         }
     }
     
@@ -40,13 +39,15 @@ struct CardView: View {
     var body: some View {
         TimelineView(.animation) { _ in
             if card.isFaceUp || !card.isMatched {
-                Pie(endAngle: .degrees(card.bonusPercentRemaining * 360))
-                    .fill(gradient)
-                    .opacity(Constants.Pie.opacity)
-                    .overlay(cardContents.padding(Constants.Pie.inset))
-                    .padding(Constants.inset)
-                    .cardify(isFaceUp: card.isFaceUp, gradient: gradient)
-                    .transition(.scale)
+                GeometryReader { geometry in
+                    Pie(endAngle: .degrees(card.bonusPercentRemaining * 360))
+                        .fill(gradient)
+                        .opacity(Constants.Pie.opacity)
+                        .overlay(cardContents.padding(geometry.size.width / 10))
+                        .padding(Constants.inset)
+                        .cardify(isFaceUp: card.isFaceUp, gradient: gradient)
+                        .transition(.scale)
+                }
             } else {
                 Color.clear
             }

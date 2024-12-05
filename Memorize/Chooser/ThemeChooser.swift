@@ -8,33 +8,31 @@
 import SwiftUI
 
 struct ThemeChooser: View {
-    @ObservedObject var store: ThemeStore
+    @ObservedObject var store: GameStore
     @State private var selectedThemeId: UUID?
-    @State private var editedThemeId: UUID?
+    @State private var editedTheme: Theme?
     
     var body: some View {
         NavigationSplitView {
             themes
                 .navigationTitle("Themes")
-                .toolbar {
-                    Button("Reset", systemImage: "arrow.circlepath") {
-                        store.reset()
-                    }
-                    Button("Add", systemImage: "plus") {
-                        store.add()
-                        editedThemeId = store.themes.last?.id
-                    }
-                }
         } detail: {
-            if 
+            if
                 let selectedThemeId,
-                let theme = store.themes
-                    .first(where: { $0.id == selectedThemeId })
+                let game = store.games
+                    .first(where: { $0.theme.id == selectedThemeId })
             {
-                EmojiMemoryGameView(viewModel: .init(theme: theme))
+                EmojiMemoryGameView(viewModel: game)
             } else {
                 Text("Choose a theme")
                     .navigationBarTitleDisplayMode(.inline)
+            }
+        }
+        .sheet(item: $editedTheme) { theme in
+            if let index = store.themes
+                .firstIndex(where: { $0.id == theme.id })
+            {
+                ThemeEditor(theme: $store.themes[index])
             }
         }
     }
@@ -47,24 +45,21 @@ struct ThemeChooser: View {
                 }
                 .swipeActions(edge: .leading) {
                     Button("Edit", systemImage: "slider.horizontal.3") {
-                        editedThemeId = theme.id
+                        editedTheme = theme
                     }
                 }
             }
             .onDelete {
-                store.remove(atOffsets: $0)
+                store.removeTheme(atOffsets: $0)
             }
         }
-        .sheet(
-            isPresented: .init(
-                get: { editedThemeId != nil },
-                set: { _ in editedThemeId = nil }
-            )
-        ) {
-            if let index = store.themes
-                .firstIndex(where: { $0.id == editedThemeId })
-            {
-                ThemeEditor(theme: $store.themes[index])
+        .toolbar {
+            Button("Reset", systemImage: "arrow.circlepath") {
+                store.resetThemes()
+            }
+            Button("Add", systemImage: "plus") {
+                store.addTheme()
+                editedTheme = store.themes.last
             }
         }
     }

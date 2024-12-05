@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class EmojiMemoryGame: ObservableObject {
+final class EmojiMemoryGame: ObservableObject {
     
     typealias Card = MemoryGame<Character>.Card
     
@@ -29,7 +29,7 @@ class EmojiMemoryGame: ObservableObject {
         }
     }
     
-    let theme: Theme
+    @Published private(set) var theme: Theme
     @Published private var model: MemoryGame<Character>
     
     init(theme: Theme) {
@@ -43,25 +43,50 @@ class EmojiMemoryGame: ObservableObject {
     
     var colors: [Color] {
         theme.colors
-            .map(\.uiColor)
+            .map(\.ui)
     }
     
     var name: String {
         theme.name
     }
     
-    var goalDate: Date {
+    var isDealt: Bool {
+        model.isDealt
+    }
+    
+    var goalDate: Date? {
         model.goalDate
     }
     
-    var endDate: Date? {
-        model.endDate
+    var timerInterval: ClosedRange<Date> {
+        let intervalEnd = goalDate
+            ?? .init(timeIntervalSinceNow: model.gameSpan)
+        return .now...max(intervalEnd, .now)
+    }
+    
+    var pauseTime: Date? {
+        isDealt
+            ? model.endDate 
+            : .init(timeIntervalSinceNow: model.gameSpan)
     }
     
     // MARK: - Intents
     
+    func deal() {
+        model.deal()
+    }
+    
     func choose(_ card: Card) {
         model.choose(card)
+    }
+    
+    func updateTheme(to theme: Theme) {
+        let needRestart = !theme
+            .isCompatibleUpdate(from: self.theme)
+        self.theme = theme
+        if needRestart {
+            restart()
+        }
     }
     
     func restart() {

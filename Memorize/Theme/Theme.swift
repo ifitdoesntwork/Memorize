@@ -9,7 +9,7 @@ import Foundation
 
 struct Theme: Identifiable, Codable {
     
-    struct Color: Identifiable, Codable {
+    struct Color: Equatable, Identifiable, Codable {
         var id = UUID()
         
         let red: Double
@@ -88,6 +88,14 @@ struct Theme: Identifiable, Codable {
         emoji[isIncluded: true]
             .count
     }
+    
+    func isCompatibleUpdate(from other: Self) -> Bool {
+        emoji == other.emoji
+        && (
+            numberOfPairs == other.numberOfPairs
+            || numberOfPairs == nil
+        )
+    }
 }
 
 private extension Int? {
@@ -112,4 +120,14 @@ private extension Array where Element == Character {
     static let minimum: Self = [
         "❓", "❗️"
     ]
+}
+
+extension Theme: Equatable {
+    
+    static func == (lhs: Theme, rhs: Theme) -> Bool {
+        lhs.name == rhs.name
+        && lhs.emoji == rhs.emoji
+        && lhs.numberOfPairs == rhs.numberOfPairs
+        && lhs.colors == rhs.colors
+    }
 }

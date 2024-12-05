@@ -7,26 +7,13 @@
 
 import SwiftUI
 
-extension Theme {
-    
-    init(
-        name: String = "",
-        emoji: [Character] = [],
-        numberOfPairs: Int? = nil,
-        colors: [SwiftUI.Color]
-    ) {
-        self.init(
-            name: name,
-            emoji: emoji,
-            numberOfPairs: numberOfPairs,
-            colors: colors.map(Color.init)
-        )
-    }
-}
-
 extension Color {
     
-    init(color: Theme.Color) {
+    var theme: Theme.Color {
+        .init(color: self)
+    }
+    
+    fileprivate init(color: Theme.Color) {
         self.init(
             .sRGB,
             red: color.red,
@@ -37,9 +24,16 @@ extension Color {
     }
 }
 
+extension [Color] {
+    
+    var theme: [Theme.Color] {
+        map(\.theme)
+    }
+}
+
 extension Theme.Color {
     
-    var uiColor: SwiftUI.Color {
+    var ui: SwiftUI.Color {
         get {
             .init(color: self)
         }
@@ -48,7 +42,7 @@ extension Theme.Color {
         }
     }
     
-    init(color: Color) {
+    fileprivate init(color: Color) {
         var red: CGFloat = 0
         var green: CGFloat = 0
         var blue: CGFloat = 0
@@ -75,7 +69,7 @@ extension Gradient {
     init(colors: [Theme.Color]) {
         self = .init(
             colors: colors
-                .map(\.uiColor)
+                .map(\.ui)
         )
     }
 }

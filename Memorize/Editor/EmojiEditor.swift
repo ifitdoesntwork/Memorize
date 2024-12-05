@@ -27,7 +27,7 @@ struct EmojiEditor: View {
         TextField("Add Emoji Here", text: $emojiToAdd)
             .font(emojiFont)
             .onChange(of: emojiToAdd) {
-                $0.last
+                $1.last
                     .map { emoji.add($0) }
                 
                 emojiToAdd = emojiToAdd.last
@@ -64,7 +64,7 @@ struct EmojiEditor: View {
 
 #Preview {
     struct Preview: View {
-        @State var emoji = Theme.suggestions[0].emoji
+        @State private var emoji = Theme.suggestions[0].emoji
         
         var body: some View {
             EmojiEditor(

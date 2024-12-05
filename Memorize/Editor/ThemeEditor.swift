@@ -69,7 +69,7 @@ struct ThemeEditor: View {
                 {
                     ColorPicker(
                         "",
-                        selection: $theme.colors[index].uiColor
+                        selection: $theme.colors[index].ui
                     )
                     .labelsHidden()
                 }
@@ -84,7 +84,7 @@ struct ThemeEditor: View {
                 },
                 set: {
                     if $0 > theme.colors.count {
-                        theme.colors.append(.init(color: .gray))
+                        theme.colors.append(Color.gray.theme)
                     } else {
                         theme.colors.removeLast()
                     }
@@ -97,7 +97,7 @@ struct ThemeEditor: View {
 
 #Preview {
     struct Preview: View {
-        @State var theme = Theme.suggestions[0]
+        @State private var theme = Theme.suggestions[0]
         
         var body: some View {
             ThemeEditor(theme: $theme)

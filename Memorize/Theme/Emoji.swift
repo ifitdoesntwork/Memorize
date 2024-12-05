@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Emoji: Codable {
+struct Emoji: Equatable, Codable {
     private var symbols: [Bool: [Character]]
     
     subscript(isIncluded isIncluded: Bool) -> [Character] {
